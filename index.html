@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Cache-Control" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+
+      <meta name="robots" content="noindex">
+
+      <title>My 3d model takeSnapshot</title>
+      <meta name="description" content="my 3d test">
+
+      <link href="https://genkasaneiwa.github.io/ar-js/fluff_festival/assets/css/ar.css?v=1.1" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.gstatic.com">
+      <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;200;300;400;500;600;700&display=swap"
+         rel="stylesheet">
+      <!-- materialアイコン-->
+      <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <!-- ar.js用ファイル-->
+      <script
+         src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js">
+      </script>
+      <!-- 画像トラック用 マーカー時に入れているとおかしくなる-->
+      <!-- <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script> -->
+      <!-- マーカートラック用-->
+      <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+      <!-- クリック用-->
+      <script src="https://rawgit.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-click-events/events.js">
+      </script>
+      <!-- particle用-->
+      <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
+      <!-- gltfアニメーション用 -->
+      <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+      <script>
+         AFRAME.registerComponent("registerevents", {
+            init: function() {
+               var marker = this.el;
+               var loader = document.getElementById("loader");
+               // var ar_show = document.getElementById("ar-show");
+               // var audio = document.getElementById("audio");
+               // var flag = document.querySelector('.vol-on');
+
+               // マーカーを検出したイベントの登録
+               marker.addEventListener("markerFound", function() {
+                  var markerId = marker.id;
+                  //animation start方法 https://qiita.com/1pp0/items/059d5e5936ca5196f7e4
+                  loader.style.display = "none";
+                  // ar_show.style.display = "block";
+
+                  // if (flag.classList.contains('js-on')) {
+                  //    audio.play(); // onのときのみ音声再生
+                  // }
+
+               });
+
+               // マーカーを見失ったイベントの登録
+               marker.addEventListener("markerLost", function() {
+                  var markerId = marker.id;
+                  loader.style.display = "flex";
+                  // ar_show.style.display = "none";
+                  // audio.pause(); // 音声停止
+               });
+            },
+         });
+      </script>
+   </head>
+
+   <body>
+      <div id="loader" class="loader">
+         <div class="loader__wrapper">
+            <p class="loader__para">please hold your phone up to the marker
+            </p>
+            <img class="loader__img" src="https://genkasaneiwa.github.io/me/assets/img/marker.png" alt="marker">
+            <!-- <p class="loader__para">*music will start as soon as the marker matches</p> -->
+         </div>
+         <!-- <a class="loader__link" href="https://somernova.com/" target="_blank">Somernova art project</a> -->
+      </div>
+
+      <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+         arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;">
+
+         <a-assets>
+           <a-asset-item id="me" src="https://genkasaneiwa.github.io/me/assets/img/model/gltf/me.gltf"></a-asset-item>
+         </a-assets>
+         <!-- ライトをいれるとデフォルトからこの設定に書き換わる -->
+         <a-light type="ambient" color="#fff"></a-light>
+
+         <!--マーカー用 https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html-->
+         <a-marker type="pattern" url="https://genkasaneiwa.github.io/me/assets/img/marker/marker.patt" registerevents>
+            
+            <!-- <a-image id="target" src="" 
+               height="2" 
+               width="3"
+               scale="1 1 1"
+               position="1 1 1"
+               rotation="270 0 0">
+            </a-image> -->
+
+            <a-entity   
+               position="0 0 0"
+               rotation="0 0 0"
+               gltf-model="#me"
+               scale="100 100 100"
+               animation-mixer
+            ></a-entity>
+
+            <!-- animation="property: rotation; to: 0 10000 0; loop: true; dur: 500000;" -->
+         
+
+         <!--画像用 https://carnaux.github.io/NFT-Marker-Creator/#/ -->
+         <!-- <a-nft
+            type="nft"
+            url="https://genkasaneiwa.github.io/ar-js/fluff_festival/assets/img/marker/marker"
+            smooth="true"
+            smoothCount="10"
+            smoothTolerance=".01"
+            smoothThreshold="5"
+            registerevents
+         > -->
+
+         
+            
+            <!-- 
+            x +にすると右による
+            y -にすると近づく 
+            z -にすると上に上がる
+            -->
+            
+            <!-- <a-image
+               src="https://genkasaneiwa.github.io/ar-js//fluff_festival/assets/img/marker.jpg"
+               width="300"
+               height="300"
+               scale="1 1 1"
+               position="145 -10 -200"
+               rotation="270 0 0"
+               >
+            </a-image> -->
+
+            <!-- <a-text id="text" position="145 -10 -200" rotation="270 0 0" value="" color="white" width="700" align="center"></a-text> -->
+
+
+         <!-- </a-nft> -->
+      </a-marker>
+         
+         <a-entity camera></a-entity>
+      </a-scene>
+
+      <!-- <audio class="audio" id="audio" src="<?= h($audio_url); ?>"
+         autoplay="autoplay"></audio> -->
+
+      <script>
+         //infoクローズボタン
+         // $(".js-close").on('click', function() {
+         //       $('.info__box, .js-close').slideToggle(200);
+         //       $('.js-open').fadeIn(100);
+         // }); 
+         // $(".js-open").on('click', function() {
+         //       $('.js-open').fadeOut(100);
+         //       $('.info__box, .js-close').slideToggle(200);
+   
+               
+         // }); 
+         
+         // $(function() {
+         //    mw('#open-modal1', '#open-modal1', '.modal-trigger1', '#close');
+         //    /*
+         //    mw(モーダル全体, モーダルのメインコンテンツ, 開くボタン , 閉じるボタン );
+         //    */
+         // });
+
+         // function mw(modal, modalContent, btnOpen, btnClose) {
+         //    $(btnOpen).on('click', function() {
+         //       $(modal).fadeIn();
+         //    });
+         //    $(modal).on('click', function(event) {
+         //       if (!($(event.target).closest($(modalContent)).length) || ($(event.target).closest($(btnClose))
+         //             .length)) {
+         //          $(modal).fadeOut();
+         //       }
+         //    });
+         // }
+
+
+         //Web Share API
+         //クリックで動作するボタン
+         //- var shareButton = document.getElementById("share");
+         //- var linkButton = document.getElementById("bow-link");
+         //- //ボタンクリックで実行
+         //- shareButton.addEventListener("click", share);
+
+         //- function share() {
+         //- //web share apiをサポートしているか否か
+         //- if (navigator.share) {
+         //- navigator.share({
+         //- title: document.querySelector("title").textContent,
+         //- text: document
+         //- .querySelector('meta[name="description"]')
+         //- .getAttribute("content"),
+         //- url: location.href,
+         //- });
+         //- }
+         //- //サポートしていない場合の処理
+         //- else {
+         //- alert("This browser does not support the share function.");
+         //- }
+         //- }
+
+         //safariのaudio/videoミュート対策
+         // var audio = document.querySelector("#audio");
+         // var button = document.querySelector("#music-btn");
+
+         // button.addEventListener("touchstart", () => {
+         //    audio.muted = true; // ミュート有効
+         //    audio.play(); // 動画再生
+         //    audio.pause(); // 動画停止
+         //    audio.muted = false; // ミュート無効
+         //    audio.currentTime = 0; // 開始秒数を戻す
+         // });
+
+         //botton on off
+         // var on = document.querySelector(".vol-on");
+         // var off = document.querySelector(".vol-off")
+
+         // document.addEventListener('DOMContentLoaded', function() {
+         //    on.style.display = "none";
+         // });
+
+         // on.addEventListener('click', function(event) {
+         //    on.style.display = "none";
+         //    off.style.display = "inline-block";
+         //    on.classList.remove("js-on");
+         //    audio.pause();
+         // });
+
+         // off.addEventListener('click', function(event) {
+         //    off.style.display = "none";
+         //    on.style.display = "inline-block";
+         //    on.classList.add("js-on");
+         //    audio.play();
+         // });
+
+         // var image = document.querySelector('#snap');
+         // var take_photo_btn = document.querySelector('#take-photo');
+         // var delete_photo_btn = document.querySelector('#delete-photo');
+         // var text = document.querySelector('.note');
+         // //- var download_photo_btn = document.querySelector('#download-photo');
+
+         // var is_show = document.querySelector("is_show");
+         // var is_hidden = document.querySelector("is_hidden");
+         // var target1 = document.getElementById("btn-group");
+         // var target2 = document.getElementById("loader");
+
+         // //スナップショットボタン
+         // take_photo_btn.addEventListener("click", function(e) {
+         //    e.preventDefault();
+         //    var video = document.querySelector('video');
+         //    var snap = takeSnapshot(video);
+
+         //    //スナップショット表示.
+         //    image.setAttribute('src', snap);
+         //    image.parentElement.classList.add('visible');
+         //    text.classList.add('is_show');
+
+         //    // 削除ボタンと保存ボタン有効
+         //    delete_photo_btn.classList.remove("disabled");
+         //    //- download_photo_btn.classList.remove("disabled");
+
+         //    // 保存ボタンにスナップショットを渡す
+         //    //- download_photo_btn.href = snap;
+
+         //    // スナップショットが隠れないように表示を保持
+         //    target1.classList.add('is_show');
+         //    target2.classList.add('is_hidden');
+
+         // });
+
+         // //削除ボタン
+         // delete_photo_btn.addEventListener("click", function(e) {
+
+         //    e.preventDefault();
+
+         //    // スナップショットを隠す
+         //    image.setAttribute('src', "");
+         //    image.parentElement.classList.remove("visible");
+         //    text.classList.remove('is_show');
+
+         //    // 削除ボタンと保存ボタン無効
+         //    delete_photo_btn.classList.add("disabled");
+         //    //- download_photo_btn.classList.add("disabled");
+
+         //    // スナップショットが隠す
+         //    target1.classList.remove('is_show');
+         //    target2.classList.remove('is_hidden');
+
+         // });
+
+         //スナップショットを撮る
+         // function takeSnapshot(video) {
+         //    var resizedCanvas = document.createElement("canvas");
+         //    var resizedContext = resizedCanvas.getContext("2d");
+         //    var width = video.videoWidth;
+         //    var height = video.videoHeight;
+         //    var aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
+
+         //    if (width && height) {
+         //       //videoのサイズをキャンバスにセット
+         //       resizedCanvas.width = width;
+         //       resizedCanvas.height = height;
+         //       //キャンバスにvideoをコピー
+         //       resizedContext.drawImage(video, 0, 0, width, height);
+
+         //       //カメラの画角でar側の縮小処理を変える
+         //       if (width > height) {
+         //          // 横長（PC)
+         //          resizedContext.drawImage(aScene, 0, 0, width, height);
+         //       } else {
+         //          // 縦長（スマホ）
+         //          var scale = height / width;
+         //          var scaledWidth = height * scale;
+         //          var marginLeft = (width - scaledWidth) / 2;
+         //          resizedContext.drawImage(aScene, marginLeft, 0, scaledWidth, height);
+         //       }
+         //       return resizedCanvas.toDataURL('image/png');
+         //    }
+         // }
+      </script>
+   </body>
+</html>
